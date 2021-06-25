@@ -31,10 +31,12 @@ https://drive.google.com/drive/folders/1w4KNO2jIlkyzQgUkkcZ18zrC8A1Nqvwa?usp=sha
 You can download darknet weights from my google drive:
 
 - [x] Complex Yolo v4:
-https://drive.google.com/file/d/1jpaDXJcBLf4s3JBYrmapkTQ9OCeGmoQI/view?usp=sharing
+
+https://drive.google.com/file/d/1jVNRuencSHRtjDQcWySVDGSI_bqfKfCP/view?usp=sharing
 
 - [x] Complex Yolo v4 - tiny:
-https://drive.google.com/file/d/1Mukg7aZ3C5ZWFhkS5r1wmL1tgWXsTxS6/view?usp=sharing
+
+On training
 
 
 ## 3. Quick start
