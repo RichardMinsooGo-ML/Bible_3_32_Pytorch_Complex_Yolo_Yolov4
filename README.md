@@ -47,27 +47,25 @@ https://drive.google.com/file/d/1jVNRuencSHRtjDQcWySVDGSI_bqfKfCP/view?usp=shari
 - [x] `detect_1` folder shall contain folders and contents.
 - [x] `ImageSets` folder shall contain *.txt files.
 
-```
-${ROOT}
-├── dataset/
-│    ├── classes.names
-│    └── kitti/
-│          ├── classes_names.txt
-│          ├── detect_1/    <-- for detection test
-│          │    ├── calib/
-│          │    ├── image_2/
-│          │    └── velodyne/
-│          ├── ImageSets/ 
-│          │    ├── detect_1.txt
-│          │    ├── detect_2.txt
-│          │    ├── sample.txt
-│          ├── sampledata/ 
-│          │    ├── image_2/
-│          │    ├── calib/
-│          │    ├── label_2/
-│          │    └── velodyne/
+      ${ROOT}
+      ├── dataset/
+      │    ├── classes.names
+      │    └── kitti/
+      │          ├── classes_names.txt
+      │          ├── detect_1/    <-- for detection test
+      │          │    ├── calib/
+      │          │    ├── image_2/
+      │          │    └── velodyne/
+      │          ├── ImageSets/ 
+      │          │    ├── detect_1.txt
+      │          │    ├── detect_2.txt
+      │          │    ├── sample.txt
+      │          ├── sampledata/ 
+      │          │    ├── image_2/
+      │          │    ├── calib/
+      │          │    ├── label_2/
+      │          │    └── velodyne/
 
-```
 
 
 ### 3.3 Test [without downloading dataset] 
