@@ -170,39 +170,39 @@ ${ROOT}
     
 ## 7. Evaluation
 
-- [x] `Complex Yolo v3` evaluation.
+- [x] `Complex Yolo v4` evaluation.
 
        $ python eval_mAP.py 
-       $ python eval_mAP.py --model_def config/complex_yolov3.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3.pth --batch_size 2
+       $ python eval_mAP.py --model_def config/cfg/complex_yolov4.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v4.pth
 
 ```
-    Detecting objects: 100%|███████████████████████████████████████████████████████████████████████| 741/741 [02:44<00:00,  4.51it/s]
-    Computing AP: 100%|███████████████████████████████████████████████████████████████████████████████| 3/3 [00:00<00:00, 107.44it/s]
+      100%|██████████████████████████████████████████████████████████████████████████| 354/354 [02:50<00:00,  2.07it/s]
+      Computing AP: 100%|███████████████████████████████████████████████████████████████| 3/3 [00:00<00:00, 111.53it/s]
 
-    Done computing mAP...
+      Done computing mAP...
 
-        >>>      Class 0 (Car): precision = 0.9052, recall = 0.9866, AP = 0.9790, f1: 0.9441
-        >>>      Class 1 (Ped): precision = 0.6389, recall = 0.9317, AP = 0.8272, f1: 0.7580
-        >>>      Class 2 (Cyc): precision = 0.7927, recall = 0.9524, AP = 0.9013, f1: 0.8652
+        >>>      Class 0 (Car): precision = 0.9115, recall = 0.9753, AP = 0.9688, f1: 0.9423
+        >>>      Class 1 (Ped): precision = 0.6961, recall = 0.9306, AP = 0.7848, f1: 0.7964
+        >>>      Class 2 (Cyc): precision = 0.8000, recall = 0.9377, AP = 0.9096, f1: 0.8634
 
-    mAP: 0.9025
+      mAP: 0.8877
 ``` 
     
-- [x] `Complex Yolo v3 - tiny` evaluation.
+- [x] `Complex Yolo v4 - tiny` evaluation.
 
        $ python eval_mAP.py --model_def config/complex_yolov3_tiny.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3_tiny.pth --batch_size 8
     
 ```
-    Detecting objects: 100%|████████████████████████████████████████████████████████████████████████| 186/186 [01:36<00:00,  1.93it/s]
-    Computing AP: 100%|████████████████████████████████████████████████████████████████████████████████| 3/3 [00:00<00:00, 103.71it/s]
+      100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 354/354 [01:37<00:00,  3.63it/s]
+      Computing AP: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:00<00:00, 107.29it/s]
 
-    Done computing mAP...
+      Done computing mAP...
 
-        >>>      Class 0 (Car): precision = 0.8858, recall = 0.9706, AP = 0.9592, f1: 0.9263
-        >>>      Class 1 (Ped): precision = 0.4882, recall = 0.7662, AP = 0.4929, f1: 0.5964
-        >>>      Class 2 (Cyc): precision = 0.6042, recall = 0.9451, AP = 0.7875, f1: 0.7371
+        >>>      Class 0 (Car): precision = 0.6226, recall = 0.9699, AP = 0.7933, f1: 0.7584
+        >>>      Class 1 (Ped): precision = 0.1332, recall = 0.3299, AP = 0.0548, f1: 0.1898
+        >>>      Class 2 (Cyc): precision = 0.1299, recall = 0.3626, AP = 0.0663, f1: 0.1913
 
-    mAP: 0.7465
+      mAP: 0.3048
 ```
 
 
@@ -223,15 +223,14 @@ Point Cloud Preprocessing is based on:
 ```
 ${ROOT}
 ├── detection.py
-├── detection_both_side.py
 ├── eval_mAP.py
 ├── README.md 
 ├── train.py
 ├── checkpoints/ 
-│    ├── Complex_yolo_yolo_v3.pth
-│    ├── Complex_yolo_yolo_v3_tiny.pth
-│    ├── yolov3.weights
-│    └── yolov3-tiny.weights
+│    ├── Complex_yolo_yolo_v4.pth
+│    ├── Complex_yolo_yolo_v4_tiny.pth
+│    ├── yolov4.weights
+│    └── yolov4-tiny.weights
 ├── config/ 
 │    ├── complex_yolov3.cfg
 │    ├── complex_yolov3_tiny.cfg
