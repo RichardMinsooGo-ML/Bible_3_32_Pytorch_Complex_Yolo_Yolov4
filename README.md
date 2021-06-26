@@ -36,7 +36,7 @@ https://drive.google.com/file/d/1jVNRuencSHRtjDQcWySVDGSI_bqfKfCP/view?usp=shari
 
 - [x] Complex Yolo v4 - tiny:
 
-On training
+      On training
 
 
 ## 3. Quick start
@@ -79,26 +79,12 @@ ${ROOT}
 - [x] Detection test for `Yolo v3-tiny` with `detect_1` folder.
 
        $ python detection.py --model_def config/complex_yolov3_tiny.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3_tiny.pth --batch_size 8  
-       
-- [x] Both side detection test for `Yolo v3` with `detect_1` folder.
-
-       $ python detection_both_side.py --model_def config/complex_yolov3.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3.pth --batch_size 2
-       
-- [x] Both side detection test for `Yolo v3-tiny` with `detect_1` folder.
-
-       $ python detection_both_side.py --model_def config/complex_yolov3_tiny.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3_tiny.pth --batch_size 8
-
-      
+             
        
 ### 3.4 Demo Video 
 - [x] One side detection demo.
 
-![Detection_one_side](./asset/Detection_one_side.gif)
-
-- [x] Both side detection demo.
-
-![detection_both_side](./asset/detection_both_side.gif)
-
+![pred_complex_yolo_v4](./asset/pred_complex_yolo_v4.gif)
 
 ## 4. Data Preparation from KITTI
 
