@@ -232,10 +232,12 @@ ${ROOT}
 │    ├── yolov4.weights
 │    └── yolov4-tiny.weights
 ├── config/ 
-│    ├── complex_yolov3.cfg
-│    ├── complex_yolov3_tiny.cfg
-│    ├── complex_yolov4.cfg
-│    ├── complex_yolov4_tiny.cfg
+│    ├── cfg/
+│    │     ├── complex_yolov3.cfg
+│    │     ├── complex_yolov3_tiny.cfg
+│    │     ├── complex_yolov4.cfg
+│    │     └── complex_yolov4_tiny.cfg
+│    ├── kitti_config.py
 │    └── train_config.py
 ├── data_process/ 
 │    ├── config.py
