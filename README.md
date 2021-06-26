@@ -72,11 +72,12 @@ https://drive.google.com/file/d/1jVNRuencSHRtjDQcWySVDGSI_bqfKfCP/view?usp=shari
 
 - [x] Detection test for `Yolo v3` with `detect_1` folder.
 
-       $ python detection.py --model_def config/complex_yolov3.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3.pth --batch_size 2
-
+       $ python detection.py --model_def config/cfg/complex_yolov4.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v4.pth
+       $ python detection.py
+      
 - [x] Detection test for `Yolo v3-tiny` with `detect_1` folder.
 
-       $ python detection.py --model_def config/complex_yolov3_tiny.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3_tiny.pth --batch_size 8  
+       On training  
              
        
 ### 3.4 Demo Video 
