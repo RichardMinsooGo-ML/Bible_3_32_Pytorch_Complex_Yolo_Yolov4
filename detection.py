@@ -1,11 +1,10 @@
-
+# python detection.py --model_def config/cfg/complex_yolov4.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v4.pth
+# python detection.py --model_def config/cfg/complex_yolov4_tiny.cfg.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3_tiny.pth --batch_size 8  
 import os, sys, time, datetime, argparse
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 import numpy as np
 import torch
-
-# sys.path.append("./")
 
 import config.kitti_config as cnf
 import cv2
@@ -20,11 +19,10 @@ from utils.mayavi_viewer import show_image_with_boxes, merge_rgb_to_bev, predict
 def main():
     parser = argparse.ArgumentParser()
     
-    # parser.add_argument("--saved_fn", type=str, default="complexer_yolov4", metavar="FN", help="The name using for saving logs, models,...")
     parser.add_argument("-a", "--arch", type=str, default="darknet", metavar="ARCH", help="The name of the model architecture")
     
     parser.add_argument("--model_def", type=str, default="config/cfg/complex_yolov4.cfg", metavar="PATH", help="The path for cfgfile (only for darknet)")
-    parser.add_argument("--pretrained_path", type=str, default="checkpoints/complex_yolov4_mse_loss.pth", metavar="PATH", help="the path of the pretrained checkpoint")
+    parser.add_argument("--pretrained_path", type=str, default="checkpoints/Complex_yolo_yolo_v4.pth", metavar="PATH", help="the path of the pretrained checkpoint")
     parser.add_argument("--batch_size"  , type=int  , default=1, help="size of each image batch")
     parser.add_argument("--conf_thresh"  , type=float, default=0.5, help="object confidence threshold")
     parser.add_argument("--nms_thresh", type=float, default=0.5, help="the threshold for conf")
@@ -32,7 +30,6 @@ def main():
     parser.add_argument("--img_size", type=int, default=608, help="the size of input image")
     parser.add_argument("--use_giou_loss", action="store_true", help="If true, use GIoU loss during training. If false, use MSE loss for training")
 
-    # parser.add_argument("--no_cuda", action="store_true", help="If true, cuda is not used.")
     parser.add_argument("--gpu_idx", default=None, type=int, help="GPU index to use.")
     parser.add_argument("--num_samples", type=int, default=None, help="Take a subset of the dataset to run and debug")
     parser.add_argument("--num_workers", type=int, default=1, help="Number of threads for loading data")
@@ -41,7 +38,7 @@ def main():
     
     parser.add_argument("--save_test_output", type=bool, default=True, help="If true, the output image of the testing phase will be saved")
     parser.add_argument("--output_format", type=str, default="video", metavar="PATH", help="the type of the test output (support image or video)")
-    parser.add_argument("--output_video_fn", type=str, default="out_complexer_yolov4", metavar="PATH", help="the video filename if the output format is video")
+    parser.add_argument("--output_video_fn", type=str, default="pred_complex_yolo_v4", metavar="PATH", help="the video filename if the output format is video")
 
     configs = parser.parse_args()
     
@@ -73,8 +70,8 @@ def main():
     # Load checkpoint weights
     if configs.pretrained_path:
         if configs.pretrained_path.endswith(".pth"):
-            # model.load_state_dict(torch.load(configs.pretrained_path))
-            model.load_state_dict(torch.load(configs.pretrained_path,map_location='cuda:0'))
+            model.load_state_dict(torch.load(configs.pretrained_path))
+            # model.load_state_dict(torch.load(configs.pretrained_path,map_location='cuda:0'))
             print("Trained pytorch weight loaded!")
     
     # Data Parallel
@@ -145,9 +142,9 @@ def main():
         configs.show_image = True
         
         if configs.show_image:
-            # cv2.imshow("test-img", out_img)
+            cv2.imshow("test-img", out_img)
             # print("\n[INFO] Press n to see the next sample >>> Press Esc to quit...\n")
-            if cv2.waitKey(0) & 0xFF == 27:
+            if cv2.waitKey(1) & 0xFF == 27:
                 break
                 
     if out_cap:

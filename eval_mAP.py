@@ -1,3 +1,7 @@
+# python eval_mAP.py --model_def config/cfg/complex_yolov4.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v4.pth
+# python eval_mAP.py 
+
+# python eval_mAP.py --model_def config/cfg/complex_yolov4_tiny.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v4_tiny.pth
 
 import os, sys, time, datetime, argparse
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
@@ -48,18 +52,20 @@ def main():
 
     parser.add_argument("-a", "--arch", type=str, default="darknet", metavar="ARCH", help="The name of the model architecture")
         
-    # parser.add_argument("--model_def", type=str, default="config/cfg/complex_yolov4.cfg", metavar="PATH",help="path to model definition file")
-    # parser.add_argument("--pretrained_path", type=str, default="checkpoints/complex_yolov4_mse_loss.pth", metavar="PATH", help="path to weights file")
+    # parser.add_argument("--model_def", type=str, default="config/cfg/complex_yolov4_tiny.cfg", metavar="PATH",help="path to model definition file")
+    # parser.add_argument("--pretrained_path", type=str, default="checkpoints/Complex_yolo_yolo_v4_tiny.pth", metavar="PATH", help="path to weights file")
+    # parser.add_argument("--save_path", type=str, default="checkpoints/Complex_yolo_yolo_v4_tiny.pth", metavar="PATH", help="path to weights file")
+    
     parser.add_argument("--model_def", type=str, default="config/cfg/complex_yolov4.cfg", metavar="PATH",help="path to model definition file")
-    parser.add_argument("--pretrained_path", type=str, default="checkpoints/complex_yolov4_mse_loss.pth", metavar="PATH", help="path to weights file")
+    parser.add_argument("--pretrained_path", type=str, default="checkpoints/Complex_yolo_yolo_v4.pth", metavar="PATH", help="path to weights file")
+    parser.add_argument("--save_path", type=str, default="checkpoints/Complex_yolo_yolo_v4.pth", metavar="PATH", help="path to weights file")
+    
     parser.add_argument("--class_path", type=str, default="dataset/kitti/classes_names.txt", metavar="PATH", help="path to class label file")
     parser.add_argument("--batch_size"  , type=int  , default=4, help="size of each image batch")
     parser.add_argument("--iou_thres"   , type=float, default=0.5, help="iou threshold required to qualify as detected")
     parser.add_argument("--conf_thres", type=float, default=0.5, help="object confidence threshold")
     parser.add_argument("--nms_thres",  type=float, default=0.5, help="iou thresshold for non-maximum suppression")
     parser.add_argument("--img_size",   type=int,   default=608, help="size of each image dimension")
-
-    parser.add_argument("--save_path", type=str, default="checkpoints/Model_complexer_yolo_V4_v1.pth", metavar="PATH", help="path to weights file")
     
     parser.add_argument("--use_giou_loss", action="store_true", help="If true, use GIoU loss during training. If false, use MSE loss for training")
     parser.add_argument("--gpu_idx", default=None, type=int, help="GPU index to use.")
@@ -90,14 +96,14 @@ def main():
     # Load checkpoint weights
     if configs.pretrained_path:
         if configs.pretrained_path.endswith(".pth"):
-            # model.load_state_dict(torch.load(configs.pretrained_path))
-            model.load_state_dict(torch.load(configs.pretrained_path,map_location='cuda:0'))
+            model.load_state_dict(torch.load(configs.pretrained_path))
+            # model.load_state_dict(torch.load(configs.pretrained_path,map_location='cuda:0'))
             print("Trained pytorch weight loaded!")
-    
+            
+    # torch.save(model.state_dict(), configs.save_path)
+        
     # Data Parallel
     model = make_data_parallel(model, configs)
-    
-    torch.save(model.state_dict(), configs.save_path)
     
     # Eval mode
     model.eval()
