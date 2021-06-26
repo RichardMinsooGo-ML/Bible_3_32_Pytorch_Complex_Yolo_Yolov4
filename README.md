@@ -77,7 +77,7 @@ https://drive.google.com/file/d/1jVNRuencSHRtjDQcWySVDGSI_bqfKfCP/view?usp=shari
       
 - [x] Detection test for `Yolo v3-tiny` with `detect_1` folder.
 
-       On training  
+       On training : it will be updated soon!  
              
        
 ### 3.4 Demo Video 
@@ -151,51 +151,23 @@ ${ROOT}
 
 ## 6. Train
 
-- [x] `Complex Yolo v3` training from `pretrained weight`.
+- [x] `Complex Yolo v4` training from `pretrained weight`.
 
-       $ python train.py --model_def config/complex_yolov3.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3.pth --save_path checkpoints/Complex_yolo_yolo_v3.pth
+       $ python train.py --model_def config/cfg/complex_yolov4.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v4.pth --save_path checkpoints/Complex_yolo_yolo_v4.pth
+       $ python train.py
+       
+- [x] `Complex Yolo v4` training from `darknet weight`.
+
+       $ python train.py --model_def config/cfg/complex_yolov4.cfg --pretrained_path checkpoints/yolov4.weights --save_path checkpoints/Complex_yolo_yolo_v4.pth
     
-- [x] `Complex Yolo v3` training from `darknet weight`.
+- [x] `Complex Yolo v4-tiny` training from `pretrained weight`.
 
-       $ python train.py --model_def config/complex_yolov3.cfg --pretrained_path checkpoints/yolov3.weights --save_path checkpoints/Complex_yolo_yolo_v3.pth
+       $ python train.py --model_def config/cfg/complex_yolov4_tiny.cfg --pretrained_path checkpoints/yolov4-tiny.weights --save_path checkpoints/Complex_yolo_yolo_v4_tiny.pth --batch_size 8 
     
-- [x] `Complex Yolo v3-tiny` training from `pretrained weight`.
+- [x] `Complex Yolo v4-tiny` training from `darknet weight`.
 
-       $ python train.py --model_def config/complex_yolov3_tiny.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3_tiny.pth --save_path checkpoints/Complex_yolo_yolo_v3_tiny.pth
+       $ python train.py --model_def config/cfg/complex_yolov4_tiny.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v4_tiny.pth --save_path checkpoints/Complex_yolo_yolo_v4_tiny.pth --batch_size 8 
     
-- [x] `Complex Yolo v3-tiny` training from `darknet weight`.
-
-       $ python train.py --model_def config/complex_yolov3_tiny.cfg --pretrained_path checkpoints/yolov3-tiny.weights --save_path checkpoints/Complex_yolo_yolo_v3_tiny.pth
-    
-
---Training log example--
-
-    ---- [Epoch 2/2, Batch 2816/2882] ----
-    +------------+--------------+--------------+--------------+
-    | Metrics    | YOLO Layer 0 | YOLO Layer 1 | YOLO Layer 2 |
-    +------------+--------------+--------------+--------------+
-    | grid_size  | 20           | 40           | 80           |
-    | loss       | 0.575909     | 0.540765     | 0.142208     |
-    | loss_x     | 0.001625     | 0.006621     | 0.007713     |
-    | loss_y     | 0.001771     | 0.008851     | 0.009983     |
-    | loss_w     | 0.002201     | 0.002989     | 0.002227     |
-    | loss_h     | 0.002344     | 0.006478     | 0.001188     |
-    | loss_im    | 0.001971     | 0.016018     | 0.001143     |
-    | loss_re    | 0.000640     | 0.003435     | 0.000163     |
-    | loss_obj   | 0.564806     | 0.493101     | 0.119695     |
-    | loss_cls   | 0.000007     | 0.000789     | 0.000000     |
-    | cls_acc    | 100.00%      | 100.00%      | 100.00%      |
-    | recall50   | 0.000000     | 0.000000     | 0.000000     |
-    | recall75   | 0.000000     | 0.000000     | 0.000000     |
-    | precision  | 0.000000     | 0.000000     | 0.000000     |
-    | conf_obj   | 0.863226     | 0.871151     | 0.962670     |
-    | conf_noobj | 0.001731     | 0.001676     | 0.000377     |
-    +------------+--------------+--------------+--------------+
-    Total loss 1.2588815689086914
-    ---- ETA 0:00:39.690072
-    100%|█████████████████████████████████████
-
-
 ## 7. Evaluation
 
 - [x] `Complex Yolo v3` evaluation.
