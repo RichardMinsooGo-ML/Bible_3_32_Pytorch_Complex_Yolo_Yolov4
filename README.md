@@ -36,8 +36,7 @@ https://drive.google.com/file/d/1jVNRuencSHRtjDQcWySVDGSI_bqfKfCP/view?usp=shari
 
 - [x] Complex Yolo v4 - tiny:
 
-      On training
-
+https://drive.google.com/file/d/1Ho_BzaWN0fpyKCKXfTVA8wQS9ijxuP7U/view?usp=sharing
 
 ## 3. Quick start
 
@@ -77,7 +76,7 @@ https://drive.google.com/file/d/1jVNRuencSHRtjDQcWySVDGSI_bqfKfCP/view?usp=shari
       
 - [x] Detection test for `Yolo v3-tiny` with `detect_1` folder.
 
-       On training : it will be updated soon!  
+       $ python detection.py --model_def config/cfg/complex_yolov4_tiny.cfg.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3_tiny.pth --batch_size 8
              
        
 ### 3.4 Demo Video 
@@ -193,8 +192,8 @@ ${ROOT}
        $ python eval_mAP.py --model_def config/complex_yolov3_tiny.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3_tiny.pth --batch_size 8
     
 ```
-      100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 354/354 [01:37<00:00,  3.63it/s]
-      Computing AP: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:00<00:00, 107.29it/s]
+      100%|███████████████████████████████████████████████████████████████████████████| 354/354 [01:37<00:00,  3.63it/s]
+      Computing AP: 100%|████████████████████████████████████████████████████████████████| 3/3 [00:00<00:00, 107.29it/s]
 
       Done computing mAP...
 
