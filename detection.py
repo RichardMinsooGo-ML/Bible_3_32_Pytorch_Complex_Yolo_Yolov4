@@ -1,17 +1,13 @@
-# python detection.py --model_def config/cfg/yolo3d_yolov4.cfg --pretrained_path checkpoints/Model_yolo3d_yolov4.pth
-# python detection.py --model_def config/cfg/yolo3d_yolov4_tiny.cfg --pretrained_path checkpoints/Model_yolo3d_yolov4_tiny.pth
-
+# python detection.py --model_def config/cfg/complex_yolov4.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v4.pth
+# python detection.py --model_def config/cfg/complex_yolov4_tiny.cfg.cfg --pretrained_path checkpoints/Complex_yolo_yolo_v3_tiny.pth --batch_size 8  
 import os, sys, time, datetime, argparse
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 import numpy as np
-
-import cv2
 import torch
 
-sys.path.append("./")
-
 import config.kitti_config as cnf
+import cv2
 from data_process import kitti_utils, kitti_bev_utils
 from data_process.kitti_dataloader import create_test_dataloader
 from models.model_utils import create_model, make_data_parallel
@@ -20,83 +16,66 @@ from utils.evaluation_utils import post_processing, rescale_boxes, post_processi
 from utils.misc import time_synchronized
 from utils.mayavi_viewer import show_image_with_boxes, merge_rgb_to_bev, predictions_to_kitti_format
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     
-    parser.add_argument("--model_def", type=str, default="config/cfg/yolo3d_yolov4.cfg", metavar="PATH", help="The path for cfgfile (only for darknet)")
-    parser.add_argument("--pretrained_path", type=str, default="checkpoints/Model_yolo3d_yolov4.pth", metavar="PATH", help="the path of the pretrained checkpoint")
-    
-    # parser.add_argument("--model_def", type=str, default="config/cfg/yolo3d_yolov4_tiny.cfg", metavar="PATH", help="The path for cfgfile (only for darknet)")
-    # parser.add_argument("--pretrained_path", type=str, default="checkpoints/Model_yolo3d_yolov4_tiny.pth", metavar="PATH", help="the path of the pretrained checkpoint")
-    
-    parser.add_argument("--saved_fn", type=str, default="yolo3d_yolov4", metavar="FN",  help="The name using for saving logs, models,...")
     parser.add_argument("-a", "--arch", type=str, default="darknet", metavar="ARCH", help="The name of the model architecture")
-    parser.add_argument("--batch_size", type=int, default=1, help="size of each image batch")
     
+    parser.add_argument("--model_def", type=str, default="config/cfg/complex_yolov4.cfg", metavar="PATH", help="The path for cfgfile (only for darknet)")
+    parser.add_argument("--pretrained_path", type=str, default="checkpoints/Complex_yolo_yolo_v4.pth", metavar="PATH", help="the path of the pretrained checkpoint")
+    parser.add_argument("--batch_size"  , type=int  , default=1, help="size of each image batch")
+    parser.add_argument("--conf_thresh"  , type=float, default=0.5, help="object confidence threshold")
+    parser.add_argument("--nms_thresh", type=float, default=0.5, help="the threshold for conf")
+
+    parser.add_argument("--img_size", type=int, default=608, help="the size of input image")
     parser.add_argument("--use_giou_loss", action="store_true", help="If true, use GIoU loss during training. If false, use MSE loss for training")
 
-    parser.add_argument("--no_cuda", action="store_true", help="If true, cuda is not used.")
     parser.add_argument("--gpu_idx", default=None, type=int, help="GPU index to use.")
-
     parser.add_argument("--num_samples", type=int, default=None, help="Take a subset of the dataset to run and debug")
-    parser.add_argument("--num_workers", type=int, default=4, help="Number of threads for loading data")
+    parser.add_argument("--num_workers", type=int, default=1, help="Number of threads for loading data")
 
-    parser.add_argument("--conf_thresh", type=float, default=0.5, help="the threshold for conf")
-    parser.add_argument("--nms_thresh", type=float, default=0.5, help="the threshold for conf")
-    parser.add_argument("--img_size",   type=int,   default=608, help="the size of input image")
     parser.add_argument("--show_image", action="store_true", help="If true, show the image during demostration")
     
     parser.add_argument("--save_test_output", type=bool, default=True, help="If true, the output image of the testing phase will be saved")
     parser.add_argument("--output_format", type=str, default="video", metavar="PATH", help="the type of the test output (support image or video)")
-    parser.add_argument("--output_video_fn", type=str, default="out_yolo3d_yolov4", metavar="PATH", help="the video filename if the output format is video")
+    parser.add_argument("--output_video_fn", type=str, default="pred_complex_yolo_v4", metavar="PATH", help="the video filename if the output format is video")
 
     configs = parser.parse_args()
     
     configs.pin_memory = True
 
-    ####################################################################
-    ##############Dataset, Checkpoints, and results dir configs#########
-    ####################################################################
-    configs.working_dir = "./"
-    configs.dataset_dir = os.path.join(configs.working_dir, "dataset", "kitti")
+    configs.dataset_dir = os.path.join("dataset", "kitti")
 
     if configs.save_test_output:
-        configs.results_dir = os.path.join(configs.working_dir, "results", configs.saved_fn)
+        configs.results_dir = "pred_IMAGES"
         if not os.path.exists(configs.results_dir):
             os.makedirs(configs.results_dir)
 
     configs.distributed = False  # For testing
 
-    configs.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    # configs.device = torch.device("cpu" if configs.no_cuda else "cuda:{}".format(configs.gpu_idx))
-    print(configs.device)
-    
     print(configs)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    model = create_model(configs).to(configs.device)
+    model = create_model(configs)
+    
+    
     # model.print_network()
     print("\n" + "___m__@@__m___" * 10 + "\n")
     
-    print(configs.pretrained_path)
-    
+    print(configs.pretrained_path)    
     assert os.path.isfile(configs.pretrained_path), "No file at {}".format(configs.pretrained_path)
     
-    # If specified we start from checkpoint
+    model = model.to(device)
+
+    # Load checkpoint weights
     if configs.pretrained_path:
         if configs.pretrained_path.endswith(".pth"):
-            # Data Parallel
-            model = make_data_parallel(model, configs)
             model.load_state_dict(torch.load(configs.pretrained_path))
+            # model.load_state_dict(torch.load(configs.pretrained_path,map_location='cuda:0'))
             print("Trained pytorch weight loaded!")
-        else:
-            model.load_darknet_weights(configs.pretrained_path)
-            # Data Parallel
-            model = make_data_parallel(model, configs)
-            print("Darknet weight loaded!")
     
-    # model.print_network()
-    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    # model = model.to(device)
+    # Data Parallel
+    model = make_data_parallel(model, configs)
     
     out_cap = None
     # Eval mode
@@ -104,14 +83,12 @@ if __name__ == "__main__":
 
     test_dataloader = create_test_dataloader(configs)
     
-    count = 0
-    
     for batch_idx, (img_paths, imgs_bev) in enumerate(test_dataloader):
-        input_imgs = imgs_bev.to(configs.device).float()
+        input_imgs = imgs_bev.to(device).float()
         t1 = time_synchronized()
         outputs = model(input_imgs)
         t2 = time_synchronized()
-        # Outputs: (batch_size x ... x 12) 12 includes: x,y,z,h,w,l,im,re,conf,cls
+        
         with torch.no_grad():
             detections = post_processing_v2(outputs, conf_thresh=configs.conf_thresh, nms_thresh=configs.nms_thresh)
 
@@ -129,8 +106,8 @@ if __name__ == "__main__":
 
             # Rescale boxes to original image
             detections = rescale_boxes(detections, configs.img_size, img_bev.shape[:2])
-            for x, y, z, h, w, l, im, re, *_, cls_pred in detections:
-                yaw = torch.atan2(im, re)
+            for x, y, w, l, im, re, *_, cls_pred in detections:
+                yaw = np.arctan2(im, re)
                 # Draw rotated box
                 kitti_bev_utils.drawRotatedBox(img_bev, x, y, w, l, yaw, cnf.colors[int(cls_pred)])
 
@@ -165,7 +142,7 @@ if __name__ == "__main__":
         configs.show_image = True
         
         if configs.show_image:
-            # cv2.imshow("test-img", out_img)
+            cv2.imshow("test-img", out_img)
             # print("\n[INFO] Press n to see the next sample >>> Press Esc to quit...\n")
             if cv2.waitKey(1) & 0xFF == 27:
                 break
@@ -173,3 +150,6 @@ if __name__ == "__main__":
     if out_cap:
         out_cap.release()
     cv2.destroyAllWindows()
+            
+if __name__ == '__main__':
+    main()
